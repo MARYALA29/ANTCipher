@@ -18,6 +18,7 @@ struct _data{
     int a3;
 };
 
+//Function used to convert integer to data
 data convertToData(int number){
     data d;
     d.a0 = number%2;
@@ -27,6 +28,7 @@ data convertToData(int number){
     return d;
 }
 
+//Function used to convert data to integer
 int converttoint(data d){
     int number=0;
 
@@ -42,6 +44,7 @@ int converttoint(data d){
     return number;
 }
 
+//Function used to create randomness by XOR of key and input
 bitString randomness(char* in, char* key){
     bitString b;
     int i=0;
@@ -54,6 +57,7 @@ bitString randomness(char* in, char* key){
     return b;
 }
 
+//Function used to print bitstring
 void printBitString(bitString b){
     int i;
     for(i=0;i<32;i++){
@@ -62,6 +66,7 @@ void printBitString(bitString b){
     printf("\n");
 }
 
+//Function used tp convert text to bitstring
 bitString convert(char* str){
     bitString b;
     int i;
@@ -74,6 +79,7 @@ bitString convert(char* str){
     return b;
 }
 
+//Function used to convert a given bit string to data using index
 data bitStringToData(bitString k, int n){
     data d;
     d.a0 = k.a[n+3];
@@ -83,6 +89,7 @@ data bitStringToData(bitString k, int n){
     return d;
 }
 
+//Function used for converting set of 8 integers to a bitstring
 bitString intToBitstring(int e1,int e2,int e3,int e4,int e5,int e6,int e7,int e8){
     data d[8];
     d[0] = convertToData(e1);
@@ -106,6 +113,7 @@ bitString intToBitstring(int e1,int e2,int e3,int e4,int e5,int e6,int e7,int e8
     return b;
 }
 
+//Function used for applying substitution function using sboxes
 bitString substitution(bitString k,bitString a){
     int i;
     int sbox1[16] = {0,3,5,8,6,9,12,7,13,10,14,4,1,15,11,2};
@@ -123,12 +131,12 @@ bitString substitution(bitString k,bitString a){
         d[i]= convertToData(e[i]);
     }
 
+    //BitString used to select the correct combination of sboxes    
     bitString b = intToBitstring(e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7]);
-    //   printBitString(b);
 
-    data initial[8];
-    int middle[8];
-    data final[8];
+    data initial[8];//Divide the input bitstring into 8 parts of 4 bits each
+    int middle[8];  //Pass the each 4-bit box into corresponding sbox and get the new output
+    data final[8];  //Converting the integer to bitstring format
 
     for(i=0;i<8;i++){
         initial[i] = bitStringToData(a,4*i);
@@ -147,6 +155,7 @@ bitString substitution(bitString k,bitString a){
     return ret;
 }
 
+//Function to permutate using the statndard permutation for DES
 bitString permutation(bitString b){
     int perm[32] = {16,7,20,21,29,12,18,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25};
     bitString ret;
@@ -171,7 +180,7 @@ void main(){
     bitString a = randomness(in,key);
     printBitString(a);
 
-    printf("randomness done\n");
+    printf("Randomness Layer successful\n");
     bitString b = substitution(k,input);
     printBitString(b);
 
@@ -183,7 +192,7 @@ void main(){
         printBitString(b);
     }
 
-    printf("permutation layer done\n" );
+    printf("Substitution layer successful\n" );
     bitString c = permutation(b);
     printBitString(c);
 }
