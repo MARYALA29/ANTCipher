@@ -157,7 +157,7 @@ bitString substitution(bitString k,bitString a){
 
 //Function to permutate using the statndard permutation for DES
 bitString permutation(bitString b){
-    int perm[32] = {16,7,20,21,29,12,18,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25};
+    int perm[32] = {16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25};
     bitString ret;
     int i;
     for(i=0;i<32;i++){
@@ -177,22 +177,24 @@ void main(){
     bitString k = convert(key);
     bitString input = convert(in);
 
+    printf("After doing randomization\n");
     bitString a = randomness(in,key);
     printBitString(a);
 
-    printf("Randomness Layer successful\n");
-    bitString b = substitution(k,input);
+    printf("After doing substitution\n");   
+    bitString b = substitution(k,a);
     printBitString(b);
 
-    bitString b1;
-    int i;
-    for(i=0;i<19;i++){
-        b1 = substitution(k,b);
-        b=b1;
-        printBitString(b);
-    }
+    // bitString b1;
+    // int i;
+    // for(i=0;i<19;i++){
+    //     b1 = substitution(k,b);
+    //     b=b1;
+    //     printBitString(b);
+    // }
+    
 
-    printf("Substitution layer successful\n" );
+    printf("After doing Permutation\n" );
     bitString c = permutation(b);
     printBitString(c);
 }
