@@ -204,6 +204,16 @@ void main(){
     bitString b = substitution(k,a);
     printBitString(b);
     
+    bitString b1;
+    int i;
+    for(i=0;i<19;i++){
+        b1 = substitution(k,b);
+        b=b1;
+        printBitString(b);
+    }
+
+    
+    
     printf("After removing Randomness\n");
     bitString c = noRandomness(b,k);
     printBitString(c);    
