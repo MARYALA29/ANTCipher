@@ -17,7 +17,8 @@ struct _data{
     int a2;
     int a3;
 };
-
+int* converttoText(bitString b);
+int convertbintoDec(int a[]);
 //Function used to convert integer to data
 data convertToData(int number){
     data d;
@@ -140,7 +141,7 @@ bitString substitution(bitString k,bitString a){
     int sbox4[16] = {0,3,5,8,6,12,11,7,10,4,9,14,15,1,2,13};
     
     int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
-    //    int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
+    //int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
 
     data m[8];int e[8];data d[8];
     for(i=0;i<8;i++){
@@ -184,37 +185,282 @@ bitString noRandomness(bitString b, bitString k){
     }
     return ret;
 }
-
-void main(){
-    printf("Please give the input string to decrypt\n");
-    char in[32];
-    scanf("%s",in);
-    printf("Please give the key string\n");
-    char key[32];
-    scanf("%s",key);
-    
-    bitString k = convert(key);
-    bitString input = convert(in);
-
-    printf("After removing permutation\n");
-    bitString a = permutation(input);
-    printBitString(a);
-    
-    printf("After removing substitution\n");
-    bitString b = substitution(k,a);
-    printBitString(b);
-    
-    bitString b1;
+bitString expansion(int main_key[],int round)
+{
+    bitString key;
+    int r1,r2;
     int i;
-    for(i=0;i<19;i++){
-        b1 = substitution(k,b);
-        b=b1;
-        printBitString(b);
+    int order1[16] = {1,7,8,9,6,10,19,11,23,22,4,23,14,15,5,0};
+    int order2[16] = {7,6,0,21,1,19,20,2,11,12,3,13,4,14,5,15};
+    int order3[16] = {10,20,11,21,12,13,22,14,23,4,5,16,17,19,15,18};
+    int order4[16] = {20,23,5,18,6,19,12,7,13,10,14,4,1,15,11,22};
+    int order5[16] = {20,22,21,4,23,17,16,5,19,18,11,20,23,15,12,14};
+    int order6[16] = {3,0,1,5,4,6,22,9,8,10,7,11,15,13,14,12};
+    int order7[16] = {17,16,21,2,5,4,23,0,15,13,14,12,10,11,9,8};
+    int order8[16] = {23,0,6,5,2,1,7,3,18,22,19,8,21,20,14,13};
+    for(i=0;i<16;i++)
+    {
+        if(round==0)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order2[i]];
+        }
+        if(round==1)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order3[i]];
+        }
+        if(round==2)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==3)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==4)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==5)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==6)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==7)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order3[i]];
+        }
+        if(round==8)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==9)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==10)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==11)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==12)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==13)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==14)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==15)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==16)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==17)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==18)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==19)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==20)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
     }
+    return key;
+}
+void printkey(bitString key)
+{
+    int i;
+    for(i=0;i<32;i++)
+    {
+        printf("%d",key.a[i]);
+    }
+    printf("\n");
+}
+bitString decrypt(bitString b,int k[])
+{
+    bitString c;
+    bitString key;
+    int i;
+    i=20;
+    key=expansion(k,i);
+    c=permutation(b);
+    c=substitution(key,c);
+    c=noRandomness(c,key);
+    //printf("ROUND%d\n",i);
+    //printkey(c);
+    for(i=19;i>=1;i--)
+    {   
+        key=expansion(k,i);
+        c=permutation(c);
+        c=substitution(key,c);
+        c=noRandomness(c,key);
+        //printf("ROUND%d\n",i);
+        //printkey(c);
+    }
+    return c;
+}
+bitString formSet(char *buffer,int index,int length)
+{
+    int array[8];
+    int i,j;
+    bitString new;
+    int array_index=1;
+    for(j=index;j<index+4;j++)
+    {   
+        int num;
+        if(j<length)
+        {   
+            num=buffer[j];
+            for (i = 0; i < 8; ++i) 
+            {  
+                array[i] = num & (1 << i) ? 1 : 0;
+                new.a[(array_index*8)-1-i]=array[i];
+            }
+        }
+        array_index++;
+    }
+    
+    for(j=0;j<32;j++)
+    {
+        printf("%d",new.a[j]);
+    }
+    printf("\n");
+    return new;
+}
+void cbcDecrypt(int key[])
+{   
 
+    FILE *fileptr;
+    char *buffer;
+    long filelen;
+    fileptr = fopen("output3.txt", "rb"); 
+    fseek(fileptr, 0, SEEK_END);          
+    filelen = ftell(fileptr);            
+    rewind(fileptr);                      
+
+    buffer = (char *)malloc((filelen)*sizeof(char)); 
+    fread(buffer, filelen, 1, fileptr); 
+    fclose(fileptr);
+    printf("length=%ld\n",filelen);
+    bitString initialVector;
+    int i;
+    for(i=0;i<32;i++)
+    {
+        initialVector.a[i]=0;
+    }
+    int *res;
+
+    bitString temp,decrypted,afterDec,prevDec;
+    int j;
+    FILE *f;
+    f = fopen("output2.txt", "w");
+
+    for(i=0;i<filelen;i=i+4)
+    {
+        temp=formSet(buffer,i,filelen);
+        afterDec=decrypt(temp,key);
+        if(i==0)
+        {
+            decrypted=noRandomness(afterDec,initialVector);
+        }
+        else
+        {
+            decrypted=noRandomness(afterDec,prevDec);
+        }
+        res=converttoText(decrypted);
+        for(j=0;j<4;j++)
+        {
+            char tempchar;
+            tempchar=(char)res[j];
+            printf("%d %c\n",res[j],tempchar);
+            if(res[j]!=0)
+                fputc(tempchar,f);
+        }
+        prevDec=temp;
+    }
+    fclose(f);
+}
+int* converttoText(bitString b)
+{
+    int i,j;
+    int* res=malloc(4*sizeof(int));
+    int array[8];
+    for(i=0;i<4;i++)
+    {   
+        int k,l;
+        k=i*8;
+        l=0;
+        for(j=k;j<k+8;j++)
+        {
+            array[l]=b.a[j];
+            l++;
+        }
+        res[i]=convertbintoDec(array);
+    }
+    return res;
+}
+int convertbintoDec(int a[])
+{
+    int i;
+    int res=0;
+    for(i=0;i<8;i++)
+    {      
+        if(a[7-i]==1)
+        {
+            res=res+pow(2,i);
+        }
+    }
+    return res;
+}
+void main()
+{
     
-    
-    printf("After removing Randomness\n");
-    bitString c = noRandomness(b,k);
-    printBitString(c);    
+    int initialVector[48];
+    int i;
+    for(i=0;i<48;i++)
+    {
+        initialVector[i]=1;
+    }
+    cbcDecrypt(initialVector);  
 }

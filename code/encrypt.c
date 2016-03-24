@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
+#include<time.h>
 
 typedef struct _bitString bitString;
 
@@ -137,7 +138,7 @@ bitString substitution(bitString k,bitString a){
     int sbox4[16] = {0,3,5,8,6,12,11,7,10,4,9,14,15,1,2,13};
     
     int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
-    //    int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
+    //int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
 
     data m[8];int e[8];data d[8];
     for(i=0;i<8;i++){
@@ -180,18 +181,162 @@ bitString permutation(bitString b){
     }
     return ret;
 } 
-bitString encrypt(bitString b,bitString k)
+bitString expansion(int main_key[],int round)
+{
+    bitString key;
+    int r1,r2;
+    int i;
+    int order1[16] = {1,7,8,9,6,10,19,11,23,22,4,23,14,15,5,0};
+    int order2[16] = {7,6,0,21,1,19,20,2,11,12,3,13,4,14,5,15};
+    int order3[16] = {10,20,11,21,12,13,22,14,23,4,5,16,17,19,15,18};
+    int order4[16] = {20,23,5,18,6,19,12,7,13,10,14,4,1,15,11,22};
+    int order5[16] = {20,22,21,4,23,17,16,5,19,18,11,20,23,15,12,14};
+    int order6[16] = {3,0,1,5,4,6,22,9,8,10,7,11,15,13,14,12};
+    int order7[16] = {17,16,21,2,5,4,23,0,15,13,14,12,10,11,9,8};
+    int order8[16] = {23,0,6,5,2,1,7,3,18,22,19,8,21,20,14,13};
+    for(i=0;i<16;i++)
+    {
+        if(round==0)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order2[i]];
+        }
+        if(round==1)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order3[i]];
+        }
+        if(round==2)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==3)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==4)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==5)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==6)
+        {
+            key.a[i]=main_key[order1[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==7)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order3[i]];
+        }
+        if(round==8)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==9)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==10)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==11)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==12)
+        {
+            key.a[i]=main_key[order2[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==13)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order4[i]];
+        }
+        if(round==14)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==15)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==16)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+        if(round==17)
+        {
+            key.a[i]=main_key[order3[i]];
+            key.a[16+i]=main_key[24+order8[i]];
+        }
+        if(round==18)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order5[i]];
+        }
+        if(round==19)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order6[i]];
+        }
+        if(round==20)
+        {
+            key.a[i]=main_key[order4[i]];
+            key.a[16+i]=main_key[24+order7[i]];
+        }
+    }
+    return key;
+}
+void printkey(bitString key)
+{
+    int i;
+    for(i=0;i<32;i++)
+    {
+        printf("%d",key.a[i]);
+    }
+    printf("\n");
+}
+bitString encrypt(bitString b,int k[])
 {
     bitString a,c;
-    a=randomness(b,k);
-    a=substitution(a,k);
-    c=permutation(a);
+    bitString key;
     int i;
-    for(i=0;i<19;i++)
+    i=1;
+    //printf("KEY\n");
+    key=expansion(k,i);
+    //printkey(key);
+    c=randomness(b,key);
+    c=substitution(key,c);
+    c=permutation(c);
+    printf("ROUND%d\n",i);
+    printkey(c);
+    for(i=2;i<21;i++)
     {   
-        c=randomness(c,k);
-        c=substitution(k,c);
+        key=expansion(k,i);
+        //printkey(key);
+        c=randomness(c,key);
+        c=substitution(key,c);
         c=permutation(c);
+        printf("ROUND%d\n",i);
+        printkey(c);
+
     }
     return c;
 }
@@ -230,7 +375,7 @@ bitString formSet(char *buffer,int index,int length)
     printf("\n");
     return new;
 }
-void cbcEncrypt(bitString key)
+void cbcEncrypt(int key[])
 {   
 
     FILE *fileptr;
@@ -256,7 +401,7 @@ void cbcEncrypt(bitString key)
     bitString temp,encrypted,beforeEnc;
     int j;
     FILE *f;
-    f = fopen("output.txt", "w");
+    f = fopen("output3.txt", "w");
 
     for(i=0;i<filelen;i=i+4)
     {
@@ -279,6 +424,12 @@ void cbcEncrypt(bitString key)
             fputc(tempchar,f);
         }
     }
+    printf("\n\n");
+    for(i=0;i<32;i++)
+    {
+        printf("%d",encrypted.a[i]);
+    }
+    printf("\n\n");
     fclose(f);
 }
 int* converttoText(bitString b)
@@ -317,11 +468,11 @@ int convertbintoDec(int a[])
 
 void main()
 {
-    bitString initialVector;
+    int initialVector[48];
     int i;
-    for(i=0;i<32;i++)
+    for(i=0;i<48;i++)
     {
-        initialVector.a[i]=1;
+        initialVector[i]=1;
     }
     cbcEncrypt(initialVector);
     
