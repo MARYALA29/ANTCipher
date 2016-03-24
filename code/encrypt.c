@@ -17,6 +17,8 @@ struct _data{
     int a2;
     int a3;
 };
+int* converttoText(bitString b);
+int convertbintoDec(int a[]);
 
 //Function used to convert integer to data
 data convertToData(int number){
@@ -45,11 +47,24 @@ int converttoint(data d){
 }
 
 //Function used to create randomness by XOR of key and input
-bitString randomness(char* in, char* key){
+/*bitString randomness(char* in, char* key){
     bitString b;
     int i=0;
     for(i=0;i<32;i++){
         if(in[i]==key[i])
+            b.a[i]=0;
+        else
+            b.a[i]=1;
+    }
+    return b;
+}*/
+bitString randomness(bitString in,bitString key)
+{
+    bitString b;
+    int i=0;
+    for(i=0;i<32;i++)
+    {
+        if(in.a[i]==key.a[i])
             b.a[i]=0;
         else
             b.a[i]=1;
@@ -165,36 +180,149 @@ bitString permutation(bitString b){
     }
     return ret;
 } 
-
-void main(){
-    printf("Please give the input string to encrypt\n");
-    char in[32];
-    scanf("%s",in);
-    printf("Please give the key string\n");
-    char key[32];
-    scanf("%s",key);
-
-    bitString k = convert(key);
-    bitString input = convert(in);
-
-    printf("After doing randomization\n");
-    bitString a = randomness(in,key);
-    printBitString(a);
-
-    printf("After doing substitution\n");   
-    bitString b = substitution(k,a);
-    printBitString(b);
-
-    bitString b1;
+bitString encrypt(bitString b,bitString k)
+{
+    bitString a,c;
+    a=randomness(b,k);
+    a=substitution(a,k);
+    c=permutation(a);
     int i;
-    for(i=0;i<19;i++){
-        b1 = substitution(k,b);
-        b=b1;
-        printBitString(b);
+    for(i=0;i<19;i++)
+    {   
+        c=randomness(c,k);
+        c=substitution(k,c);
+        c=permutation(c);
+    }
+    return c;
+}
+bitString formSet(char *buffer,int index,int length)
+{
+    int array[8];
+    int i,j;
+    bitString new;
+    int array_index=1;
+    for(j=index;j<index+4;j++)
+    {   
+        int num;
+        if(j<length)
+        {   
+            num=buffer[j];
+            for (i = 0; i < 8; ++i) 
+            {  
+                array[i] = num & (1 << i) ? 1 : 0;
+                new.a[(array_index*8)-1-i]=array[i];
+            }
+        }
+        else
+        {
+            for(i=0;i<8;i++)
+            {
+                new.a[(array_index*8)-1-i]=0;
+            }
+        }
+        array_index++;
     }
     
+    for(j=0;j<32;j++)
+    {
+        printf("%d",new.a[j]);
+    }
+    printf("\n");
+    return new;
+}
+void cbcEncrypt(bitString key)
+{   
 
-    printf("After doing Permutation\n" );
-    bitString c = permutation(b);
-    printBitString(c);
+    FILE *fileptr;
+    char *buffer;
+    long filelen;
+    fileptr = fopen("try.txt", "rb"); 
+    fseek(fileptr, 0, SEEK_END);          
+    filelen = ftell(fileptr);            
+    rewind(fileptr);                      
+
+    buffer = (char *)malloc((filelen)*sizeof(char)); 
+    fread(buffer, filelen, 1, fileptr); 
+    fclose(fileptr);
+    printf("length=%ld\n",filelen);
+    bitString initialVector;
+    int i;
+    for(i=0;i<32;i++)
+    {
+        initialVector.a[i]=0;
+    }
+    int *res;
+
+    bitString temp,encrypted,beforeEnc;
+    int j;
+    FILE *f;
+    f = fopen("output.txt", "w");
+
+    for(i=0;i<filelen;i=i+4)
+    {
+        temp=formSet(buffer,i,filelen);
+        if(i==0)
+        {
+            beforeEnc=randomness(temp,initialVector);
+        }
+        else
+        {
+            beforeEnc=randomness(temp,encrypted);
+        }
+        encrypted=encrypt(beforeEnc,key);
+        res=converttoText(encrypted);
+        for(j=0;j<4;j++)
+        {
+            printf("%d\n",res[j]);
+            char tempchar;
+            tempchar=(char)res[j];
+            fputc(tempchar,f);
+        }
+    }
+    fclose(f);
+}
+int* converttoText(bitString b)
+{
+    int i,j;
+    int* res=malloc(4*sizeof(int));
+    int array[8];
+    for(i=0;i<4;i++)
+    {   
+        int k,l;
+        k=i*8;
+        l=0;
+        for(j=k;j<k+8;j++)
+        {
+            array[l]=b.a[j];
+            l++;
+        }
+        res[i]=convertbintoDec(array);
+    }
+    return res;
+}
+int convertbintoDec(int a[])
+{
+    int i;
+    int res=0;
+    for(i=0;i<8;i++)
+    {      
+        if(a[7-i]==1)
+        {
+            res=res+pow(2,i);
+        }
+    }
+    return res;
+}
+
+
+void main()
+{
+    bitString initialVector;
+    int i;
+    for(i=0;i<32;i++)
+    {
+        initialVector.a[i]=1;
+    }
+    cbcEncrypt(initialVector);
+    
 }
