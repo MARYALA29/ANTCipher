@@ -135,13 +135,13 @@ int getIndex(int* sbox, int a){
 //Function used for applying reverse substitution function using sboxes
 bitString substitution(bitString k,bitString a){
     int i;
-    int sbox1[16] = {0,3,5,8,6,9,12,7,13,10,14,4,1,15,11,2};
-    int sbox2[16] = {0,3,5,8,6,12,11,7,9,14,10,13,15,2,1,4};
-    int sbox3[16] = {0,3,5,8,6,10,15,4,14,13,9,2,1,7,12,11};
-    int sbox4[16] = {0,3,5,8,6,12,11,7,10,4,9,14,15,1,2,13};
+    int sbox1[16] = {3,8,15,1,10,6,5,11,14,13,4,2,7,0,9,12};
+    int sbox2[16] = {15,12,2,7,9,0,5,10,1,11,14,8,6,13,3,4};
+    int sbox3[16] = {8,6,7,9,3,12,10,15,13,1,14,4,0,11,5,2};
+    int sbox4[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
     
-    int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
-    //int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
+    //int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
+    int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
 
     data m[8];int e[8];data d[8];
     for(i=0;i<8;i++){
@@ -360,12 +360,12 @@ bitString formSet(char *buffer,int index,int length)
         }
         array_index++;
     }
-    
+    /*
     for(j=0;j<32;j++)
     {
         printf("%d",new.a[j]);
     }
-    printf("\n");
+    printf("\n");*/
     return new;
 }
 void cbcDecrypt(int key[])
@@ -413,7 +413,7 @@ void cbcDecrypt(int key[])
         {
             char tempchar;
             tempchar=(char)res[j];
-            printf("%d %c\n",res[j],tempchar);
+            //printf("%d %c\n",res[j],tempchar);
             if(res[j]!=0)
                 fputc(tempchar,f);
         }
@@ -459,8 +459,11 @@ void main()
     int initialVector[48];
     int i;
     for(i=0;i<48;i++)
-    {
+    {   
+        if(i%4==0||i%4==3)
         initialVector[i]=1;
+        if(i%4==1||i%4==2)
+        initialVector[i]=0;
     }
     cbcDecrypt(initialVector);  
 }

@@ -132,13 +132,13 @@ bitString intToBitstring(int e1,int e2,int e3,int e4,int e5,int e6,int e7,int e8
 //Function used for applying substitution function using sboxes
 bitString substitution(bitString k,bitString a){
     int i;
-    int sbox1[16] = {0,3,5,8,6,9,12,7,13,10,14,4,1,15,11,2};
-    int sbox2[16] = {0,3,5,8,6,12,11,7,9,14,10,13,15,2,1,4};
-    int sbox3[16] = {0,3,5,8,6,10,15,4,14,13,9,2,1,7,12,11};
-    int sbox4[16] = {0,3,5,8,6,12,11,7,10,4,9,14,15,1,2,13};
+    int sbox1[16] = {3,8,15,1,10,6,5,11,14,13,4,2,7,0,9,12};
+    int sbox2[16] = {15,12,2,7,9,0,5,10,1,11,14,8,6,13,3,4};
+    int sbox3[16] = {8,6,7,9,3,12,10,15,13,1,14,4,0,11,5,2};
+    int sbox4[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
     
-    int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
-    //int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
+    //int sbox5[16] = {0,15,11,8,12,9,6,3,13,1,2,4,10,7,5,14};
+    int sbox5[16] = {1,15,8,3,12,0,11,6,2,5,4,10,9,14,7,13};
 
     data m[8];int e[8];data d[8];
     for(i=0;i<8;i++){
@@ -325,8 +325,8 @@ bitString encrypt(bitString b,int k[])
     c=randomness(b,key);
     c=substitution(key,c);
     c=permutation(c);
-    printf("ROUND%d\n",i);
-    printkey(c);
+    //printf("ROUND%d\n",i);
+    //printkey(c);
     for(i=2;i<21;i++)
     {   
         key=expansion(k,i);
@@ -334,8 +334,8 @@ bitString encrypt(bitString b,int k[])
         c=randomness(c,key);
         c=substitution(key,c);
         c=permutation(c);
-        printf("ROUND%d\n",i);
-        printkey(c);
+        //printf("ROUND%d\n",i);
+        //printkey(c);
 
     }
     return c;
@@ -368,11 +368,11 @@ bitString formSet(char *buffer,int index,int length)
         array_index++;
     }
     
-    for(j=0;j<32;j++)
+    /*for(j=0;j<32;j++)
     {
         printf("%d",new.a[j]);
     }
-    printf("\n");
+    printf("\n");*/
     return new;
 }
 void cbcEncrypt(int key[])
@@ -381,7 +381,7 @@ void cbcEncrypt(int key[])
     FILE *fileptr;
     char *buffer;
     long filelen;
-    fileptr = fopen("try.txt", "rb"); 
+    fileptr = fopen("size20.txt", "rb"); 
     fseek(fileptr, 0, SEEK_END);          
     filelen = ftell(fileptr);            
     rewind(fileptr);                      
@@ -402,7 +402,8 @@ void cbcEncrypt(int key[])
     int j;
     FILE *f;
     f = fopen("output3.txt", "w");
-
+    clock_t t;
+    t = clock();
     for(i=0;i<filelen;i=i+4)
     {
         temp=formSet(buffer,i,filelen);
@@ -418,18 +419,21 @@ void cbcEncrypt(int key[])
         res=converttoText(encrypted);
         for(j=0;j<4;j++)
         {
-            printf("%d\n",res[j]);
+            //printf("%d\n",res[j]);
             char tempchar;
             tempchar=(char)res[j];
             fputc(tempchar,f);
         }
     }
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+    printf("Took %f seconds to execute \n", time_taken);
     printf("\n\n");
-    for(i=0;i<32;i++)
+    /*for(i=0;i<32;i++)
     {
         printf("%d",encrypted.a[i]);
     }
-    printf("\n\n");
+    printf("\n\n");*/
     fclose(f);
 }
 int* converttoText(bitString b)
@@ -472,7 +476,10 @@ void main()
     int i;
     for(i=0;i<48;i++)
     {
+        if(i%4==0||i%4==3)
         initialVector[i]=1;
+        if(i%4==1||i%4==2)
+        initialVector[i]=0;
     }
     cbcEncrypt(initialVector);
     

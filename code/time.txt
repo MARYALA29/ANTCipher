@@ -1,0 +1,16 @@
+Took 0.000317 seconds to execute  
+Took 0.000621 seconds to execute  
+Took 0.001219 seconds to execute
+Took 0.002331 seconds to execute 
+Took 0.004679 seconds to execute
+Took 0.009898 seconds to execute 
+Took 0.019922 seconds to execute
+Took 0.040674 seconds to execute 
+Took 0.078654 seconds to execute 
+Took 0.161699 seconds to execute
+Took 0.306110 seconds to execute
+Took 0.646476 seconds to execute
+Took 1.343365 seconds to execute
+Took 2.578553 seconds to execute
+Took 5.311460 seconds to execute
+Took 10.322024 seconds to execute
