@@ -186,120 +186,120 @@ bitString expansion(int main_key[],int round)
     bitString key;
     int r1,r2;
     int i;
-    int order1[16] = {1,7,8,9,6,10,19,11,23,22,4,23,14,15,5,0};
-    int order2[16] = {7,6,0,21,1,19,20,2,11,12,3,13,4,14,5,15};
-    int order3[16] = {10,20,11,21,12,13,22,14,23,4,5,16,17,19,15,18};
-    int order4[16] = {20,23,5,18,6,19,12,7,13,10,14,4,1,15,11,22};
-    int order5[16] = {20,22,21,4,23,17,16,5,19,18,11,20,23,15,12,14};
-    int order6[16] = {3,0,1,5,4,6,22,9,8,10,7,11,15,13,14,12};
-    int order7[16] = {17,16,21,2,5,4,23,0,15,13,14,12,10,11,9,8};
-    int order8[16] = {23,0,6,5,2,1,7,3,18,22,19,8,21,20,14,13};
+    int order1[16] = {1,7,8,9,6,2,4,3,5,0,15,13,12,14,11,10};
+    int order2[16] = {7,6,0,11,1,4,3,5,2,8,15,14,12,13,10,9};
+    int order3[16] = {0,15,1,14,2,13,3,12,4,11,5,10,6,9,7,8};
+    int order4[16] = {15,14,0,1,13,12,2,3,11,10,4,5,8,9,6,7};
+    int order5[16] = {1,3,5,7,9,11,13,15,2,4,6,8,10,12,14,0};
+    int order6[16] = {0,2,4,6,8,10,12,14,15,13,11,9,7,5,3,1};
+    int order7[16] = {0,5,10,15,1,6,11,2,7,12,3,8,13,4,9,14};
+    int order8[16] = {15,13,11,9,7,5,3,1,0,2,6,4,8,10,14,12};
     for(i=0;i<16;i++)
     {
         if(round==0)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order2[i]];
+            key.a[16+i]=main_key[16+order2[i]];
         }
         if(round==1)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order3[i]];
+            key.a[16+i]=main_key[16+order3[i]];
         }
         if(round==2)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order4[i]];
+            key.a[16+i]=main_key[16+order4[i]];
         }
         if(round==3)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order5[i]];
+            key.a[16+i]=main_key[16+order5[i]];
         }
         if(round==4)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order6[i]];
+            key.a[16+i]=main_key[16+order6[i]];
         }
         if(round==5)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order7[i]];
+            key.a[16+i]=main_key[16+order7[i]];
         }
         if(round==6)
         {
             key.a[i]=main_key[order1[i]];
-            key.a[16+i]=main_key[24+order8[i]];
+            key.a[16+i]=main_key[16+order8[i]];
         }
         if(round==7)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order3[i]];
+            key.a[16+i]=main_key[16+order3[i]];
         }
         if(round==8)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order4[i]];
+            key.a[16+i]=main_key[16+order4[i]];
         }
         if(round==9)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order5[i]];
+            key.a[16+i]=main_key[16+order5[i]];
         }
         if(round==10)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order6[i]];
+            key.a[16+i]=main_key[16+order6[i]];
         }
         if(round==11)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order7[i]];
+            key.a[16+i]=main_key[16+order7[i]];
         }
         if(round==12)
         {
             key.a[i]=main_key[order2[i]];
-            key.a[16+i]=main_key[24+order8[i]];
+            key.a[16+i]=main_key[16+order8[i]];
         }
         if(round==13)
         {
             key.a[i]=main_key[order3[i]];
-            key.a[16+i]=main_key[24+order4[i]];
+            key.a[16+i]=main_key[16+order4[i]];
         }
         if(round==14)
         {
             key.a[i]=main_key[order3[i]];
-            key.a[16+i]=main_key[24+order5[i]];
+            key.a[16+i]=main_key[16+order5[i]];
         }
         if(round==15)
         {
             key.a[i]=main_key[order3[i]];
-            key.a[16+i]=main_key[24+order6[i]];
+            key.a[16+i]=main_key[16+order6[i]];
         }
         if(round==16)
         {
             key.a[i]=main_key[order3[i]];
-            key.a[16+i]=main_key[24+order7[i]];
+            key.a[16+i]=main_key[16+order7[i]];
         }
         if(round==17)
         {
             key.a[i]=main_key[order3[i]];
-            key.a[16+i]=main_key[24+order8[i]];
+            key.a[16+i]=main_key[16+order8[i]];
         }
         if(round==18)
         {
             key.a[i]=main_key[order4[i]];
-            key.a[16+i]=main_key[24+order5[i]];
+            key.a[16+i]=main_key[16+order5[i]];
         }
         if(round==19)
         {
             key.a[i]=main_key[order4[i]];
-            key.a[16+i]=main_key[24+order6[i]];
+            key.a[16+i]=main_key[16+order6[i]];
         }
         if(round==20)
         {
             key.a[i]=main_key[order4[i]];
-            key.a[16+i]=main_key[24+order7[i]];
+            key.a[16+i]=main_key[16+order7[i]];
         }
     }
     return key;
@@ -472,9 +472,9 @@ int convertbintoDec(int a[])
 
 void main()
 {
-    int initialVector[48];
+    int initialVector[32];
     int i;
-    for(i=0;i<48;i++)
+    for(i=0;i<32;i++)
     {
         if(i%4==0||i%4==3)
         initialVector[i]=1;
