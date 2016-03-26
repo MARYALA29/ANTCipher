@@ -455,15 +455,17 @@ int convertbintoDec(int a[])
 }
 void main()
 {
-    
+    char stringkey[33];
+    printf(""ENTER 32 bit key"\n", );
+    scanf("%s",stringkey);
     int initialVector[32];
     int i;
     for(i=0;i<32;i++)
-    {   
-        if(i%4==0||i%4==3)
-        initialVector[i]=1;
-        if(i%4==1||i%4==2)
-        initialVector[i]=0;
+    {
+        if(stringkey[i]=='1')
+            initialVector[i]=1;
+        else if(stringkey[i]=='0')
+            initialVector[i]=0;
     }
     cbcDecrypt(initialVector);  
 }
